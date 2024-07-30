@@ -1,0 +1,41 @@
+cabal-version: 3.4
+name: NeuralNetwork
+version: 0.1.0.0
+license: MIT
+license-file: LICENSE
+author: Nicholas Alexander
+build-type: Simple
+extra-doc-files: CHANGELOG.md
+
+library
+  exposed-modules: ActivationFunctions, Matrix, NN
+  build-depends: base ^>=4.17.2.1, matrix, vector, random, bytestring, text, array, filepath, QuickCheck
+  hs-source-dirs: src, examples, test
+  default-language: Haskell2010
+  ghc-options: -Wall -fprof-auto
+
+executable test
+  main-is: test.hs
+  build-depends: base, NeuralNetwork, vector, text, filepath
+  default-language: Haskell2010
+  ghc-options: -Wall -fprof-auto -rtsopts
+
+executable mnist
+  main-is: examples/MNIST/mnist.hs
+  build-depends: base, NeuralNetwork, matrix, bytestring, vector
+  default-language: Haskell2010
+  ghc-options: -Wall -fprof-auto -rtsopts
+
+executable iris
+  main-is: examples/IRIS/iris.hs
+  build-depends: base, NeuralNetwork, bytestring, cassava, matrix, vector
+  default-language: Haskell2010
+  ghc-options: -Wall -fprof-auto -rtsopts
+
+test-suite nntests
+  type:                exitcode-stdio-1.0
+  main-is:             NNTests.hs
+  build-depends:       base, NeuralNetwork, QuickCheck, vector, random
+  hs-source-dirs:      test
+  default-language:    Haskell2010
+  ghc-options:         -Wall -fprof-auto

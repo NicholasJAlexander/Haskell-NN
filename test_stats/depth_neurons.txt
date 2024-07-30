@@ -1,0 +1,134 @@
+--------------------------Haskell--------------------------
+Haskell: Stats for neurons: 1,1, batchsize: 1000 and epochs: 10
+["1,1","1000","10"]
+True
+Max memory: 50176 KB
+CPU usage: 91%
+Time: 0.06
+Haskell: Stats for neurons: 10,10, batchsize: 1000 and epochs: 10
+["10,10","1000","10"]
+True
+Max memory: 50192 KB
+CPU usage: 96%
+Time: 0.41
+Haskell: Stats for neurons: 20,20, batchsize: 1000 and epochs: 10
+["20,20","1000","10"]
+True
+Max memory: 50192 KB
+CPU usage: 99%
+Time: 1.31
+Haskell: Stats for neurons: 30,30, batchsize: 1000 and epochs: 10
+["30,30","1000","10"]
+True
+Max memory: 50144 KB
+CPU usage: 99%
+Time: 2.69
+Haskell: Stats for neurons: 1,1,1,1,1,1,1,1,1,1, batchsize: 1000 and epochs: 10
+["1,1,1,1,1,1,1,1,1,1","1000","10"]
+True
+Max memory: 82672 KB
+CPU usage: 97%
+Time: 0.40
+Haskell: Stats for neurons: 10,10,10,10,10,10,10,10,10,10, batchsize: 1000 and epochs: 10
+["10,10,10,10,10,10,10,10,10,10","1000","10"]
+True
+Max memory: 88864 KB
+CPU usage: 99%
+Time: 5.60
+Haskell: Stats for neurons: 20,20,20,20,20,20,20,20,20,20, batchsize: 1000 and epochs: 10
+["20,20,20,20,20,20,20,20,20,20","1000","10"]
+True
+Max memory: 91888 KB
+CPU usage: 100%
+Time: 19.66
+Haskell: Stats for neurons: 30,30,30,30,30,30,30,30,30,30, batchsize: 1000 and epochs: 10
+["30,30,30,30,30,30,30,30,30,30","1000","10"]
+True
+Max memory: 92944 KB
+CPU usage: 100%
+Time: 42.20
+Haskell: Stats for neurons: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, batchsize: 1000 and epochs: 10
+["1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1","1000","10"]
+True
+Max memory: 133904 KB
+CPU usage: 98%
+Time: 0.84
+Haskell: Stats for neurons: 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, batchsize: 1000 and epochs: 10
+["10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10","1000","10"]
+True
+Max memory: 145168 KB
+CPU usage: 100%
+Time: 12.19
+Haskell: Stats for neurons: 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20, batchsize: 1000 and epochs: 10
+["20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20","1000","10"]
+True
+Max memory: 147216 KB
+CPU usage: 100%
+Time: 42.36
+Haskell: Stats for neurons: 30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30, batchsize: 1000 and epochs: 10
+["30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30","1000","10"]
+True
+Max memory: 148304 KB
+CPU usage: 100%
+Time: 91.23
+--------------------------Python--------------------------
+Python: Stats for neurons: 1,1, batchsize: 1000 and epochs: 10
+['1,1', '1000', '10']
+Max memory: 246208 KB
+CPU usage: 67%
+Time: 0.68
+Python: Stats for neurons: 10,10, batchsize: 1000 and epochs: 10
+['10,10', '1000', '10']
+Max memory: 243632 KB
+CPU usage: 98%
+Time: 0.69
+Python: Stats for neurons: 20,20, batchsize: 1000 and epochs: 10
+['20,20', '1000', '10']
+Max memory: 243456 KB
+CPU usage: 99%
+Time: 0.69
+Python: Stats for neurons: 30,30, batchsize: 1000 and epochs: 10
+['30,30', '1000', '10']
+Max memory: 243984 KB
+CPU usage: 99%
+Time: 0.68
+Python: Stats for neurons: 1,1,1,1,1,1,1,1,1,1, batchsize: 1000 and epochs: 10
+['1,1,1,1,1,1,1,1,1,1', '1000', '10']
+Max memory: 243552 KB
+CPU usage: 98%
+Time: 0.68
+Python: Stats for neurons: 10,10,10,10,10,10,10,10,10,10, batchsize: 1000 and epochs: 10
+['10,10,10,10,10,10,10,10,10,10', '1000', '10']
+Max memory: 244304 KB
+CPU usage: 99%
+Time: 0.69
+Python: Stats for neurons: 20,20,20,20,20,20,20,20,20,20, batchsize: 1000 and epochs: 10
+['20,20,20,20,20,20,20,20,20,20', '1000', '10']
+Max memory: 244736 KB
+CPU usage: 99%
+Time: 0.69
+Python: Stats for neurons: 30,30,30,30,30,30,30,30,30,30, batchsize: 1000 and epochs: 10
+['30,30,30,30,30,30,30,30,30,30', '1000', '10']
+Max memory: 244096 KB
+CPU usage: 99%
+Time: 0.70
+Python: Stats for neurons: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, batchsize: 1000 and epochs: 10
+['1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1', '1000', '10']
+Max memory: 243696 KB
+CPU usage: 99%
+Time: 0.69
+Python: Stats for neurons: 10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10, batchsize: 1000 and epochs: 10
+['10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10', '1000', '10']
+Max memory: 244752 KB
+CPU usage: 99%
+Time: 0.69
+Python: Stats for neurons: 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20, batchsize: 1000 and epochs: 10
+['20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20', '1000', '10']
+Max memory: 246624 KB
+CPU usage: 99%
+Time: 0.70
+Python: Stats for neurons: 30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30, batchsize: 1000 and epochs: 10
+['30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30', '1000', '10']
+Max memory: 248416 KB
+CPU usage: 99%
+Time: 0.71

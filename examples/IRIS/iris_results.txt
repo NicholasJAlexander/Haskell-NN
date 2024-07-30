@@ -1,0 +1,250 @@
+Running iris.hs
+Epoch 1: Training Accuracy = 33.33333333333333
+Epoch 2: Training Accuracy = 33.33333333333333
+Epoch 3: Training Accuracy = 33.33333333333333
+Epoch 4: Training Accuracy = 33.33333333333333
+Epoch 5: Training Accuracy = 40.0
+Epoch 6: Training Accuracy = 50.0
+Epoch 7: Training Accuracy = 56.666666666666664
+Epoch 8: Training Accuracy = 56.666666666666664
+Epoch 9: Training Accuracy = 66.66666666666666
+Epoch 10: Training Accuracy = 63.33333333333333
+Epoch 11: Training Accuracy = 60.0
+Epoch 12: Training Accuracy = 53.333333333333336
+Epoch 13: Training Accuracy = 60.0
+Epoch 14: Training Accuracy = 73.33333333333333
+Epoch 15: Training Accuracy = 73.33333333333333
+Epoch 16: Training Accuracy = 73.33333333333333
+Epoch 17: Training Accuracy = 73.33333333333333
+Epoch 18: Training Accuracy = 73.33333333333333
+Epoch 19: Training Accuracy = 66.66666666666666
+Epoch 20: Training Accuracy = 66.66666666666666
+Epoch 21: Training Accuracy = 66.66666666666666
+Epoch 22: Training Accuracy = 66.66666666666666
+Epoch 23: Training Accuracy = 66.66666666666666
+Epoch 24: Training Accuracy = 66.66666666666666
+Epoch 25: Training Accuracy = 66.66666666666666
+Epoch 26: Training Accuracy = 66.66666666666666
+Epoch 27: Training Accuracy = 66.66666666666666
+Epoch 28: Training Accuracy = 66.66666666666666
+Epoch 29: Training Accuracy = 66.66666666666666
+Epoch 30: Training Accuracy = 66.66666666666666
+Epoch 31: Training Accuracy = 66.66666666666666
+Epoch 32: Training Accuracy = 66.66666666666666
+Epoch 33: Training Accuracy = 66.66666666666666
+Epoch 34: Training Accuracy = 66.66666666666666
+Epoch 35: Training Accuracy = 66.66666666666666
+Epoch 36: Training Accuracy = 66.66666666666666
+Epoch 37: Training Accuracy = 66.66666666666666
+Epoch 38: Training Accuracy = 66.66666666666666
+Epoch 39: Training Accuracy = 66.66666666666666
+Epoch 40: Training Accuracy = 66.66666666666666
+Epoch 41: Training Accuracy = 66.66666666666666
+Epoch 42: Training Accuracy = 66.66666666666666
+Epoch 43: Training Accuracy = 66.66666666666666
+Epoch 44: Training Accuracy = 70.0
+Epoch 45: Training Accuracy = 70.0
+Epoch 46: Training Accuracy = 73.33333333333333
+Epoch 47: Training Accuracy = 73.33333333333333
+Epoch 48: Training Accuracy = 73.33333333333333
+Epoch 49: Training Accuracy = 73.33333333333333
+Epoch 50: Training Accuracy = 73.33333333333333
+Epoch 51: Training Accuracy = 73.33333333333333
+Epoch 52: Training Accuracy = 73.33333333333333
+Epoch 53: Training Accuracy = 73.33333333333333
+Epoch 54: Training Accuracy = 73.33333333333333
+Epoch 55: Training Accuracy = 73.33333333333333
+Epoch 56: Training Accuracy = 73.33333333333333
+Epoch 57: Training Accuracy = 73.33333333333333
+Epoch 58: Training Accuracy = 76.66666666666667
+Epoch 59: Training Accuracy = 76.66666666666667
+Epoch 60: Training Accuracy = 76.66666666666667
+Epoch 61: Training Accuracy = 76.66666666666667
+Epoch 62: Training Accuracy = 76.66666666666667
+Epoch 63: Training Accuracy = 76.66666666666667
+Epoch 64: Training Accuracy = 80.0
+Epoch 65: Training Accuracy = 86.66666666666667
+Epoch 66: Training Accuracy = 86.66666666666667
+Epoch 67: Training Accuracy = 86.66666666666667
+Epoch 68: Training Accuracy = 90.0
+Epoch 69: Training Accuracy = 93.33333333333333
+Epoch 70: Training Accuracy = 93.33333333333333
+Epoch 71: Training Accuracy = 93.33333333333333
+Epoch 72: Training Accuracy = 93.33333333333333
+Epoch 73: Training Accuracy = 93.33333333333333
+Epoch 74: Training Accuracy = 93.33333333333333
+Epoch 75: Training Accuracy = 96.66666666666667
+Epoch 76: Training Accuracy = 96.66666666666667
+Epoch 77: Training Accuracy = 96.66666666666667
+Epoch 78: Training Accuracy = 96.66666666666667
+Epoch 79: Training Accuracy = 96.66666666666667
+Epoch 80: Training Accuracy = 96.66666666666667
+Epoch 81: Training Accuracy = 96.66666666666667
+Epoch 82: Training Accuracy = 96.66666666666667
+Epoch 83: Training Accuracy = 96.66666666666667
+Epoch 84: Training Accuracy = 96.66666666666667
+Epoch 85: Training Accuracy = 96.66666666666667
+Epoch 86: Training Accuracy = 100.0
+Epoch 87: Training Accuracy = 100.0
+Epoch 88: Training Accuracy = 100.0
+Epoch 89: Training Accuracy = 100.0
+Epoch 90: Training Accuracy = 100.0
+Epoch 91: Training Accuracy = 100.0
+Epoch 92: Training Accuracy = 100.0
+Epoch 93: Training Accuracy = 100.0
+Epoch 94: Training Accuracy = 100.0
+Epoch 95: Training Accuracy = 100.0
+Epoch 96: Training Accuracy = 100.0
+Epoch 97: Training Accuracy = 100.0
+Epoch 98: Training Accuracy = 100.0
+Epoch 99: Training Accuracy = 100.0
+Epoch 100: Training Accuracy = 100.0
+
+	Command being timed: "cabal run iris"
+	User time (seconds): 0.58
+	System time (seconds): 0.01
+	Percent of CPU this job got: 48%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.24
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 50304
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 6
+	Minor (reclaiming a frame) page faults: 5200
+	Voluntary context switches: 2
+	Involuntary context switches: 583
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 16384
+	Exit status: 0
+
+Running iris.py
+Epoch 1/100 - Test Accuracy: 0.00%
+Epoch 2/100 - Test Accuracy: 33.33%
+Epoch 3/100 - Test Accuracy: 33.33%
+Epoch 4/100 - Test Accuracy: 33.33%
+Epoch 5/100 - Test Accuracy: 33.33%
+Epoch 6/100 - Test Accuracy: 33.33%
+Epoch 7/100 - Test Accuracy: 33.33%
+Epoch 8/100 - Test Accuracy: 33.33%
+Epoch 9/100 - Test Accuracy: 33.33%
+Epoch 10/100 - Test Accuracy: 33.33%
+Epoch 11/100 - Test Accuracy: 33.33%
+Epoch 12/100 - Test Accuracy: 46.67%
+Epoch 13/100 - Test Accuracy: 56.67%
+Epoch 14/100 - Test Accuracy: 56.67%
+Epoch 15/100 - Test Accuracy: 63.33%
+Epoch 16/100 - Test Accuracy: 66.67%
+Epoch 17/100 - Test Accuracy: 66.67%
+Epoch 18/100 - Test Accuracy: 66.67%
+Epoch 19/100 - Test Accuracy: 63.33%
+Epoch 20/100 - Test Accuracy: 66.67%
+Epoch 21/100 - Test Accuracy: 66.67%
+Epoch 22/100 - Test Accuracy: 70.00%
+Epoch 23/100 - Test Accuracy: 70.00%
+Epoch 24/100 - Test Accuracy: 73.33%
+Epoch 25/100 - Test Accuracy: 76.67%
+Epoch 26/100 - Test Accuracy: 76.67%
+Epoch 27/100 - Test Accuracy: 76.67%
+Epoch 28/100 - Test Accuracy: 80.00%
+Epoch 29/100 - Test Accuracy: 80.00%
+Epoch 30/100 - Test Accuracy: 80.00%
+Epoch 31/100 - Test Accuracy: 80.00%
+Epoch 32/100 - Test Accuracy: 80.00%
+Epoch 33/100 - Test Accuracy: 80.00%
+Epoch 34/100 - Test Accuracy: 80.00%
+Epoch 35/100 - Test Accuracy: 80.00%
+Epoch 36/100 - Test Accuracy: 83.33%
+Epoch 37/100 - Test Accuracy: 83.33%
+Epoch 38/100 - Test Accuracy: 83.33%
+Epoch 39/100 - Test Accuracy: 83.33%
+Epoch 40/100 - Test Accuracy: 83.33%
+Epoch 41/100 - Test Accuracy: 86.67%
+Epoch 42/100 - Test Accuracy: 86.67%
+Epoch 43/100 - Test Accuracy: 86.67%
+Epoch 44/100 - Test Accuracy: 86.67%
+Epoch 45/100 - Test Accuracy: 86.67%
+Epoch 46/100 - Test Accuracy: 90.00%
+Epoch 47/100 - Test Accuracy: 90.00%
+Epoch 48/100 - Test Accuracy: 90.00%
+Epoch 49/100 - Test Accuracy: 90.00%
+Epoch 50/100 - Test Accuracy: 90.00%
+Epoch 51/100 - Test Accuracy: 93.33%
+Epoch 52/100 - Test Accuracy: 93.33%
+Epoch 53/100 - Test Accuracy: 93.33%
+Epoch 54/100 - Test Accuracy: 93.33%
+Epoch 55/100 - Test Accuracy: 93.33%
+Epoch 56/100 - Test Accuracy: 96.67%
+Epoch 57/100 - Test Accuracy: 96.67%
+Epoch 58/100 - Test Accuracy: 96.67%
+Epoch 59/100 - Test Accuracy: 96.67%
+Epoch 60/100 - Test Accuracy: 96.67%
+Epoch 61/100 - Test Accuracy: 96.67%
+Epoch 62/100 - Test Accuracy: 96.67%
+Epoch 63/100 - Test Accuracy: 96.67%
+Epoch 64/100 - Test Accuracy: 96.67%
+Epoch 65/100 - Test Accuracy: 96.67%
+Epoch 66/100 - Test Accuracy: 96.67%
+Epoch 67/100 - Test Accuracy: 96.67%
+Epoch 68/100 - Test Accuracy: 96.67%
+Epoch 69/100 - Test Accuracy: 96.67%
+Epoch 70/100 - Test Accuracy: 96.67%
+Epoch 71/100 - Test Accuracy: 96.67%
+Epoch 72/100 - Test Accuracy: 96.67%
+Epoch 73/100 - Test Accuracy: 96.67%
+Epoch 74/100 - Test Accuracy: 96.67%
+Epoch 75/100 - Test Accuracy: 96.67%
+Epoch 76/100 - Test Accuracy: 96.67%
+Epoch 77/100 - Test Accuracy: 96.67%
+Epoch 78/100 - Test Accuracy: 96.67%
+Epoch 79/100 - Test Accuracy: 96.67%
+Epoch 80/100 - Test Accuracy: 96.67%
+Epoch 81/100 - Test Accuracy: 96.67%
+Epoch 82/100 - Test Accuracy: 96.67%
+Epoch 83/100 - Test Accuracy: 96.67%
+Epoch 84/100 - Test Accuracy: 96.67%
+Epoch 85/100 - Test Accuracy: 96.67%
+Epoch 86/100 - Test Accuracy: 96.67%
+Epoch 87/100 - Test Accuracy: 96.67%
+Epoch 88/100 - Test Accuracy: 96.67%
+Epoch 89/100 - Test Accuracy: 96.67%
+Epoch 90/100 - Test Accuracy: 96.67%
+Epoch 91/100 - Test Accuracy: 96.67%
+Epoch 92/100 - Test Accuracy: 96.67%
+Epoch 93/100 - Test Accuracy: 96.67%
+Epoch 94/100 - Test Accuracy: 96.67%
+Epoch 95/100 - Test Accuracy: 96.67%
+Epoch 96/100 - Test Accuracy: 96.67%
+Epoch 97/100 - Test Accuracy: 96.67%
+Epoch 98/100 - Test Accuracy: 96.67%
+Epoch 99/100 - Test Accuracy: 96.67%
+Epoch 100/100 - Test Accuracy: 96.67%
+	Command being timed: "python3 ./examples/IRIS/iris.py"
+	User time (seconds): 0.94
+	System time (seconds): 2.52
+	Percent of CPU this job got: 535%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.64
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 100480
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 2312
+	Minor (reclaiming a frame) page faults: 6880
+	Voluntary context switches: 816
+	Involuntary context switches: 8617
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 16384
+	Exit status: 0

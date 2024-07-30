@@ -1,0 +1,80 @@
+Running mnist.hs
+Epoch 1: Training Accuracy = 82.45
+Epoch 2: Training Accuracy = 85.78
+Epoch 3: Training Accuracy = 86.0
+Epoch 4: Training Accuracy = 86.95
+Epoch 5: Training Accuracy = 88.02
+Epoch 6: Training Accuracy = 88.34
+Epoch 7: Training Accuracy = 90.64999999999999
+Epoch 8: Training Accuracy = 89.37
+Epoch 9: Training Accuracy = 88.36
+Epoch 10: Training Accuracy = 88.28
+Epoch 11: Training Accuracy = 90.03
+Epoch 12: Training Accuracy = 90.74
+Epoch 13: Training Accuracy = 90.71000000000001
+Epoch 14: Training Accuracy = 89.48
+Epoch 15: Training Accuracy = 90.81
+Epoch 16: Training Accuracy = 90.59
+Epoch 17: Training Accuracy = 87.68
+Epoch 18: Training Accuracy = 90.4
+Epoch 19: Training Accuracy = 87.83
+Epoch 20: Training Accuracy = 90.71000000000001
+        Command being timed: "cabal run mnist --enable-profiling -- +RTS -p -RTS"
+        User time (seconds): 7425.58
+        System time (seconds): 30.94
+        Percent of CPU this job got: 99%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 2:04:26
+        Average shared text size (kbytes): 0
+        Average unshared data size (kbytes): 0
+        Average stack size (kbytes): 0
+        Average total size (kbytes): 0
+        Maximum resident set size (kbytes): 5900096
+        Average resident set size (kbytes): 0
+        Major (requiring I/O) page faults: 0
+        Minor (reclaiming a frame) page faults: 5437029
+        Voluntary context switches: 3
+        Involuntary context switches: 5778602
+        Swaps: 0
+        File system inputs: 0
+        File system outputs: 0
+        Socket messages sent: 0
+        Socket messages received: 0
+        Signals delivered: 0
+        Page size (bytes): 16384
+        Exit status: 0
+
+Running mnist.py
+Epoch 1 - Test Accuracy: 93.29%
+Epoch 2 - Test Accuracy: 94.09%
+Epoch 3 - Test Accuracy: 94.10%
+Epoch 4 - Test Accuracy: 94.22%
+Epoch 5 - Test Accuracy: 94.12%
+Epoch 6 - Test Accuracy: 94.02%
+Epoch 7 - Test Accuracy: 93.97%
+Epoch 8 - Test Accuracy: 93.81%
+Epoch 9 - Test Accuracy: 93.94%
+Epoch 10 - Test Accuracy: 93.90%
+Total training time: 2.92 seconds
+        Command being timed: "python3 ./examples/MNIST/mnist.py"
+        User time (seconds): 33.92
+        System time (seconds): 3.72
+        Percent of CPU this job got: 1056%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.56
+        Average shared text size (kbytes): 0
+        Average unshared data size (kbytes): 0
+        Average stack size (kbytes): 0
+        Average total size (kbytes): 0
+        Maximum resident set size (kbytes): 755264
+        Average resident set size (kbytes): 0
+        Major (requiring I/O) page faults: 0
+        Minor (reclaiming a frame) page faults: 65931
+        Voluntary context switches: 0
+        Involuntary context switches: 26864
+        Swaps: 0
+        File system inputs: 0
+        File system outputs: 0
+        Socket messages sent: 0
+        Socket messages received: 0
+        Signals delivered: 0
+        Page size (bytes): 16384
+        Exit status: 0
