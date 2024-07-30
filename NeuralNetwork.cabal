@@ -9,33 +9,33 @@ extra-doc-files: CHANGELOG.md
 
 library
   exposed-modules: ActivationFunctions, Matrix, NN
-  build-depends: base ^>=4.17.2.1, matrix, vector, random, bytestring, text, array, filepath, QuickCheck
-  hs-source-dirs: src, examples, test
+  build-depends: base ^>=4.17.2.1, vector, random, array, primitive
+  hs-source-dirs: src
   default-language: Haskell2010
   ghc-options: -Wall -fprof-auto
 
-executable test
-  main-is: test.hs
-  build-depends: base, NeuralNetwork, vector, text, filepath
+executable benchmark
+  main-is: ./benchmarks/benchmark.hs
+  build-depends: base, NeuralNetwork, text, filepath
   default-language: Haskell2010
   ghc-options: -Wall -fprof-auto -rtsopts
 
 executable mnist
   main-is: examples/MNIST/mnist.hs
-  build-depends: base, NeuralNetwork, matrix, bytestring, vector
+  build-depends: base, NeuralNetwork, bytestring
   default-language: Haskell2010
   ghc-options: -Wall -fprof-auto -rtsopts
 
 executable iris
   main-is: examples/IRIS/iris.hs
-  build-depends: base, NeuralNetwork, bytestring, cassava, matrix, vector
+  build-depends: base, NeuralNetwork, bytestring, cassava
   default-language: Haskell2010
   ghc-options: -Wall -fprof-auto -rtsopts
 
 test-suite nntests
   type:                exitcode-stdio-1.0
   main-is:             NNTests.hs
-  build-depends:       base, NeuralNetwork, QuickCheck, vector, random
+  build-depends:       base, NeuralNetwork, QuickCheck, random
   hs-source-dirs:      test
   default-language:    Haskell2010
   ghc-options:         -Wall -fprof-auto

@@ -6,7 +6,6 @@ import Test.QuickCheck
 import NN
 import Matrix
 import ActivationFunctions (ActivationFunc(..), tanhAF, sigmoidAF)
-import qualified Data.Vector.Unboxed as UV
 
 -- * Newtype Wrappers
 
@@ -37,8 +36,8 @@ instance Show TestBackpropNet where
 instance Arbitrary (ColumnVector Double) where
   arbitrary = do
     size <- choose (1, 10)
-    items <- UV.replicateM size (choose (0.1, 0.5))
-    return $ cvFromList (UV.toList items)
+    items <- cvReplicateM size (choose (0.1, 0.5))
+    return $ cvFromList (cvToList items)
 
 -- | Arbitrary instance for 'Matrix Double', avoiding zero values.
 instance Arbitrary (Matrix Double) where

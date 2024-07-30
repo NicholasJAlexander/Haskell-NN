@@ -7,15 +7,13 @@ module Main where
 import Data.Csv (decodeByName, FromNamedRecord)
 import Data.List (foldl', nub)
 import qualified Data.ByteString.Lazy as BL
-import qualified Data.Vector as V
 import GHC.Generics (Generic)
 import qualified Matrix as M
 import NN (initializeNetwork, layers, getOutput, trainEpochs, printLayerBiases, BackpropNet, trainBatch)
 import ActivationFunctions
-import qualified Data.Vector.Unboxed as UV
 
 -- | Type alias for a data point, consisting of a feature vector and a label vector.
-type DataPoint = (UV.Vector Double, UV.Vector Double)
+type DataPoint a = (M.ColumnVector a, M.ColumnVector a)
 
 -- | Data type representing an Iris flower, with various features and the species.
 data IrisFlower = IrisFlower {
@@ -34,19 +32,19 @@ createDataInstance :: IrisFlower -> (M.ColumnVector Double, M.ColumnVector Doubl
 createDataInstance iris = (featuresVector, labelVector)
   where
     features = [sepal_length iris, sepal_width iris, petal_length iris, petal_width iris]
-    featuresVector = UV.fromList features
+    featuresVector = M.cvFromList features
     labelVector = encodeSpecies (species iris)
 
 -- | Encodes the species into a one-hot vector.
 encodeSpecies :: String -> M.ColumnVector Double
-encodeSpecies "setosa" = UV.fromList [1, 0, 0]
-encodeSpecies "versicolor" = UV.fromList [0, 1, 0]
-encodeSpecies "virginica" = UV.fromList [0, 0, 1]
+encodeSpecies "setosa" = M.cvFromList [1, 0, 0]
+encodeSpecies "versicolor" = M.cvFromList [0, 1, 0]
+encodeSpecies "virginica" = M.cvFromList [0, 0, 1]
 encodeSpecies _ = error "Unknown species"
 
 -- | Normalizes a vector based on provided minimum and range vectors.
-normalizeVector :: UV.Vector Double -> UV.Vector Double -> UV.Vector Double -> UV.Vector Double
-normalizeVector mins range vec = UV.zipWith3 (\v min r -> (v - min) / r) vec mins range
+normalizeVector :: M.ColumnVector Double -> M.ColumnVector Double -> M.ColumnVector Double -> M.ColumnVector Double
+normalizeVector mins range vec = M.cvZipWith3 (\v min r -> (v - min) / r) vec mins range
 
 -- | Applies min-max normalization to a list of column vectors.
 minMaxNormalization :: [M.ColumnVector Double] -> [M.ColumnVector Double]
@@ -65,7 +63,7 @@ processCSV csvData = zip normalizedFeatures labelVectors
     decoded = case decodeByName csvData of
         Left err -> error ("CSV parsing error: " ++ err)
         Right (_, v) -> v
-    irisFlowers = V.toList decoded
+    irisFlowers = M.rvToList decoded
     dataInstances = map createDataInstance irisFlowers
     (featureVectors, labelVectors) = unzip dataInstances
     normalizedFeatures = minMaxNormalization featureVectors
@@ -74,7 +72,7 @@ processCSV csvData = zip normalizedFeatures labelVectors
 testNetwork :: NN.BackpropNet -> [(M.ColumnVector Double, M.ColumnVector Double)] -> Double
 testNetwork net testData = let
     outputs = map (\(features, _) -> NN.getOutput net features) testData
-    successes = zipWith (\predicted (_, actual) -> if UV.maxIndex predicted == UV.maxIndex actual then 1 else 0) outputs testData
+    successes = zipWith (\predicted (_, actual) -> if M.cvMaxIndex predicted == M.cvMaxIndex actual then 1 else 0) outputs testData
     totalSuccesses = sum successes :: Int
     totalTests = length testData :: Int
     in (fromIntegral totalSuccesses / fromIntegral totalTests) * 100
@@ -92,23 +90,23 @@ trainAndReport net trainData testData numEpochs = go net numEpochs
       go trainedNet (epoch - 1)
 
 -- | Extracts the class index from a one-hot encoded label.
-getClassIndex :: UV.Vector Double -> Int
-getClassIndex = UV.maxIndex
+getClassIndex :: M.ColumnVector Double -> Int
+getClassIndex = M.cvMaxIndex
 
 -- | Extracts unique classes from the dataset.
-getUniqueClasses :: [DataPoint] -> [Int]
+getUniqueClasses :: [DataPoint Double] -> [Int]
 getUniqueClasses dataset = nub $ map (getClassIndex . snd) dataset
 
 -- | Filters the dataset by class index.
-filterByClass :: Int -> [DataPoint] -> [DataPoint]
+filterByClass :: Int -> [DataPoint Double] -> [DataPoint Double]
 filterByClass idx = filter ((== idx) . getClassIndex . snd)
 
 -- | Splits data for a single class based on the given ratio.
-splitData :: Double -> [DataPoint] -> ([DataPoint], [DataPoint])
+splitData :: Double -> [DataPoint Double] -> ([DataPoint Double], [DataPoint Double])
 splitData ratio items = splitAt (floor $ fromIntegral (length items) * ratio) items
 
 -- | Performs a stratified split of the dataset into training and test sets based on the given ratio.
-stratifiedSplit :: Double -> [DataPoint] -> ([DataPoint], [DataPoint])
+stratifiedSplit :: Double -> [DataPoint Double] -> ([DataPoint Double], [DataPoint Double])
 stratifiedSplit ratio dataset =
     let classes = getUniqueClasses dataset
         splitGroups = map (\cls -> splitData ratio (filterByClass cls dataset)) classes

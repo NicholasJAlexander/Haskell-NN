@@ -167,3 +167,15 @@ equalMatrices :: (Eq a, UV.Unbox a) => Matrix a -> Matrix a -> Bool
 equalMatrices m1 m2
     | nrows m1 /= nrows m2 || ncols m1 /= ncols m2 = False
     | otherwise = V.and $ V.zipWith (\row1 row2 -> UV.and $ UV.zipWith (==) row1 row2) m1 m2
+    
+-- | Replicates a monadic action a given number of times, collecting the results into an unboxed vector.
+vReplicateM :: (Monad m, UV.Unbox a) => Int -> m a -> m (UV.Vector a)
+vReplicateM = UV.replicateM
+
+-- | Finds the index of the maximum element in a column vector.
+cvMaxIndex :: (UV.Unbox a, Ord a) => ColumnVector a -> Int 
+cvMaxIndex = UV.maxIndex
+
+-- | Converts a row vector to a list.
+rvToList :: V.Vector a -> [a]
+rvToList = V.toList

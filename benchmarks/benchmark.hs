@@ -1,9 +1,10 @@
-{-# LANGUAGE BangPatterns #-}
+module Main where
+    
 import System.Environment (getArgs)
 import Text.Read (readMaybe)
-import qualified Data.Vector.Unboxed as UV
 import NN (initializeNetwork, trainEpochs, getOutput) -- Assuming these functions are properly defined.
 import ActivationFunctions (tanhAF) -- Assuming this is defined somewhere.
+import Matrix
 
 -- | The main entry point for the program.
 -- This program expects three command-line arguments:
@@ -31,13 +32,13 @@ main = do
                         initialNN = initializeNetwork neurons activationFuncs a b 0.1
 
                         -- Create dummy input and target vectors
-                        input = UV.replicate (head neurons) (1 :: Double)
-                        target = UV.replicate (last neurons) (1 :: Double)
+                        input = cvReplicate (head neurons) (1 :: Double)
+                        target = cvReplicate (last neurons) (1 :: Double)
                         inputs = replicate bs input
                         targets = replicate bs target
 
                         -- Train the neural network
-                        !trainedNN = trainEpochs initialNN ep (zip inputs targets)
+                        trainedNN = trainEpochs initialNN ep (zip inputs targets)
 
                     -- Output the results
                     -- Uncomment the lines below if you want to print detailed results
@@ -45,7 +46,7 @@ main = do
                     -- print $ mse (getOutput initialNN (head inputs)) target
                     -- print $ mse (getOutput trainedNN (head inputs)) target
                     -- Causes the network to be evaluated/trained with minimal output
-                    print (UV.length (getOutput trainedNN (head inputs)) == last neurons)
+                    print (cvLength (getOutput trainedNN (head inputs)) == last neurons)
 
                 _ -> putStrLn "Invalid batch size or epochs."
         _ -> putStrLn "Usage: program <neurons> <batchSize> <epochs>"

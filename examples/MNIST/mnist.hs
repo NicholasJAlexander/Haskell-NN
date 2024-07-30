@@ -4,7 +4,6 @@ import qualified NN
 import qualified Matrix as M
 import qualified Data.ByteString as B
 import Data.Word (Word8)
-import qualified Data.Vector.Unboxed as UV
 import ActivationFunctions
 
 -- | Helper function to convert a 28x28 matrix to a 784x1 column vector.
@@ -13,7 +12,7 @@ flattenMatrix mat = M.matrixToVector $ M.transpose mat
 
 -- | Helper function to convert a list of Word8 to a ColumnVector Double.
 convertToVector :: [Word8] -> M.ColumnVector Double
-convertToVector = UV.fromList . map (\x -> fromIntegral x / 255.0)
+convertToVector = M.cvFromList . map (\x -> fromIntegral x / 255.0)
 
 -- | Load the MNIST images and convert them to ColumnVectors.
 loadMNISTImages :: FilePath -> IO [M.ColumnVector Double]
@@ -50,13 +49,13 @@ chunksOf n xs
 
 -- | Convert a label to a one-hot encoded column vector.
 labelToColumnVector :: Int -> M.ColumnVector Double
-labelToColumnVector label = UV.fromList $ replicate label 0.0 ++ [1.0] ++ replicate (9 - label) 0.0
+labelToColumnVector label = M.cvFromList $ replicate label 0.0 ++ [1.0] ++ replicate (9 - label) 0.0
 
 -- | Test the neural network and return the accuracy as a percentage.
 testNetwork :: NN.BackpropNet -> [(M.ColumnVector Double, M.ColumnVector Double)] -> Double
 testNetwork net testData = let
     outputs = map (\(features, _) -> NN.getOutput net features) testData
-    successes = zipWith (\predicted (_, actual) -> if UV.maxIndex predicted == UV.maxIndex actual then 1 else 0) outputs testData
+    successes = zipWith (\predicted (_, actual) -> if M.cvMaxIndex predicted == M.cvMaxIndex actual then 1 else 0) outputs testData
     totalSuccesses = sum successes :: Int
     totalTests = length testData :: Int
     in (fromIntegral totalSuccesses / fromIntegral totalTests) * 100
