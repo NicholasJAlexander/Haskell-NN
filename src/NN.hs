@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wno-unused-local-binds #-}
 module NN where
 import System.Random (randomRIO)
 import Control.Monad (replicateM)

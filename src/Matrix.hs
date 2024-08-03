@@ -22,6 +22,9 @@ fromLists xss
   where 
     lengths = map length xss
 
+toList :: UV.Unbox a => Matrix a -> [a]
+toList = V.foldr ((++) . UV.toList) []
+
 -- | Returns the number of columns in the matrix.
 ncols :: UV.Unbox a => Matrix a -> Int
 ncols m = if V.null m then 0 else UV.length (V.head m)
@@ -169,8 +172,8 @@ equalMatrices m1 m2
     | otherwise = V.and $ V.zipWith (\row1 row2 -> UV.and $ UV.zipWith (==) row1 row2) m1 m2
     
 -- | Replicates a monadic action a given number of times, collecting the results into an unboxed vector.
-vReplicateM :: (Monad m, UV.Unbox a) => Int -> m a -> m (UV.Vector a)
-vReplicateM = UV.replicateM
+cvReplicateM :: (Monad m, UV.Unbox a) => Int -> m a -> m (UV.Vector a)
+cvReplicateM = UV.replicateM
 
 -- | Finds the index of the maximum element in a column vector.
 cvMaxIndex :: (UV.Unbox a, Ord a) => ColumnVector a -> Int 
@@ -179,3 +182,7 @@ cvMaxIndex = UV.maxIndex
 -- | Converts a row vector to a list.
 rvToList :: V.Vector a -> [a]
 rvToList = V.toList
+
+-- | Calculated difference between two matrices
+matrixDifference :: (UV.Unbox a, Num a) => Matrix a -> Matrix a -> [a]
+matrixDifference m1 m2 = map abs (zipWith (-) (toList m1) (toList m2))

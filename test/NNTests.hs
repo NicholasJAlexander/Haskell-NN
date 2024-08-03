@@ -67,6 +67,13 @@ instance Arbitrary TestBackpropNet where
     learningRate <- choose (0.01, 0.05)
     return $ TestBackpropNet $ BackpropNet (map getLayer layers) learningRate
 
+-- | Mean squared error (MSE) calculation.
+mse :: ColumnVector Double -> ColumnVector Double -> Double
+mse output target =
+    let diff = cvZipWith (-) output target
+        squared = cvMap (\x -> -x * x) diff
+    in cvSum squared / fromIntegral (cvLength output)
+
 -- * Generators
 
 -- | Generator for a list of neurons (layer sizes).
@@ -102,9 +109,66 @@ genInputTargetPair net = do
 
 -- * Property Tests
 
+-- | Property to test the sensitivity of the network to small input changes.
+inputSensitivity :: Property
+inputSensitivity = forAll genBackpropNet $ \(TestBackpropNet net) ->
+  forAll (genInputTargetPair net) $ \(input, _) ->
+    let output1 = getOutput net input
+        perturbedInput = cvMap (+ 1e-5) input
+        output2 = getOutput net perturbedInput
+    in mse output1 output2 < 0.01
+
+-- | Property to test that the network is deterministic.
+isDeterministic :: Property
+isDeterministic = forAll genBackpropNet $ \(TestBackpropNet net) ->
+  forAll (genInputTargetPair net) $ \(input, _) ->
+    getOutput net input == getOutput net input
+
+-- | Property to test that training reduces error.
+trainingReducesError :: Property
+trainingReducesError = forAll genBackpropNet $ \(TestBackpropNet network) ->
+  let modifiedNet = network {learningRate = 0.000000001} in
+  forAll (genInputTargetPair modifiedNet) $ \(input, target) ->
+    let unTrainedOutput = getOutput modifiedNet input
+        trainedOutput = getOutput (trainBatch modifiedNet [(input, target)]) input
+        errorBefore = mse target unTrainedOutput
+        errorAfter = mse target trainedOutput
+    in counterexample ("Output before training: " ++ show unTrainedOutput ++ show (errorBefore) ++
+                       "\nOutput after training: " ++ show trainedOutput ++ show (errorAfter)++
+                       "\nTarget: " ++ show target) $ errorAfter < errorBefore || errorAfter < 0.01
+
+
+gradSymmetry :: Property
+gradSymmetry = forAll genBackpropNet $ \(TestBackpropNet net) ->
+  forAll (genInputTargetPair net) $ \(input, target) ->
+    let epsilon = 1e-9
+
+        -- Propagate and backpropagate for original input
+        propagatedLayersOriginal = propagateNet input net
+        backpropagatedLayersOriginal = backpropagateNet target propagatedLayersOriginal
+
+        -- Compute gradients for original input
+        originalGradients = map bpErrGrad backpropagatedLayersOriginal
+
+        -- Perturb the input slightly
+        perturbedInput = cvMap (+ epsilon) input
+
+        -- Propagate and backpropagate for perturbed input
+        propagatedLayersPerturbed = propagateNet perturbedInput net
+        backpropagatedLayersPerturbed = backpropagateNet target propagatedLayersPerturbed
+
+        -- Compute gradients for perturbed input
+        perturbedGradients = map bpErrGrad backpropagatedLayersPerturbed
+
+        -- Compare the original and perturbed gradients
+        gradientDifferences = zipWith (matrixDifference) originalGradients perturbedGradients
+
+        -- Check if the difference in gradients is small, indicating symmetry
+    in all (all (< epsilon)) gradientDifferences
+
 -- | Property to test that propagation preserves the output size.
-prop_propagationPreservesSize :: Property
-prop_propagationPreservesSize = forAll genBackpropNet $ \(TestBackpropNet net) ->
+propagationPreservesSize :: Property
+propagationPreservesSize = forAll genBackpropNet $ \(TestBackpropNet net) ->
   not (null (layers net)) ==>
   forAll (vectorOf (inputSize net) (choose (0.1, 0.5))) $ \input ->
     collect (length $ layers net) $  -- Number of layers
@@ -116,45 +180,12 @@ prop_propagationPreservesSize = forAll genBackpropNet $ \(TestBackpropNet net) -
     inputSize net = ncols . lWeights . head $ layers net
     lastLayerSize net = nrows . lWeights . last $ layers net
 
--- | Mean squared error (MSE) calculation.
-mse :: ColumnVector Double -> ColumnVector Double -> Double
-mse output target =
-    let diff = cvZipWith (-) output target
-        squared = cvMap (\x -> x * x) diff
-    in cvSum squared / fromIntegral (cvLength output)
-
--- | Property to test the sensitivity of the network to small input changes.
-prop_inputSensitivity :: Property
-prop_inputSensitivity = forAll genBackpropNet $ \(TestBackpropNet net) ->
-  forAll (genInputTargetPair net) $ \(input, _) ->
-    let output1 = getOutput net input
-        perturbedInput = cvMap (+ 1e-5) input
-        output2 = getOutput net perturbedInput
-    in mse output1 output2 < 0.01
-
--- | Property to test that the network is deterministic.
-prop_deterministic :: Property
-prop_deterministic = forAll genBackpropNet $ \(TestBackpropNet net) ->
-  forAll (genInputTargetPair net) $ \(input, _) ->
-    getOutput net input == getOutput net input
-
--- | Property to test that training reduces error.
-prop_trainingReducesError :: Property
-prop_trainingReducesError = forAll genBackpropNet $ \(TestBackpropNet network) ->
-  let modifiedNet = network {learningRate = 0.000000001} in
-  forAll (genInputTargetPair modifiedNet) $ \(input, target) ->
-    let unTrainedOutput = getOutput modifiedNet input
-        trainedOutput = getOutput (trainBatch modifiedNet [(input, target)]) input
-        errorBefore = mse target unTrainedOutput
-        errorAfter = mse target trainedOutput
-    in counterexample ("Output before training: " ++ show unTrainedOutput ++ show (errorBefore) ++
-                       "\nOutput after training: " ++ show trainedOutput ++ show (errorAfter)++
-                       "\nTarget: " ++ show target) $ errorAfter < errorBefore || errorAfter < 0.01
-
 -- | Main function to run the tests.
 main :: IO ()
 main = do
-    quickCheck prop_propagationPreservesSize
-    quickCheck prop_inputSensitivity
-    quickCheck prop_deterministic
-    quickCheck prop_trainingReducesError
+    quickCheck inputSensitivity
+    quickCheck isDeterministic
+    quickCheck trainingReducesError
+    quickCheck gradSymmetry
+    
+

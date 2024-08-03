@@ -90,7 +90,7 @@ main = do
     let trainData = zip trainImages (map labelToColumnVector trainLabels)
         testData = zip testImages (map labelToColumnVector testLabels)
     
-    trainedNet <- trainAndReport net (take 10 trainData) (take 10 testData) 20
+    trainedNet <- trainAndReport net trainData testData 20
     
     print $ NN.getOutput trainedNet (head trainImages)
     print $ head trainLabels

@@ -12,25 +12,25 @@ library
   build-depends: base ^>=4.17.2.1, vector, random, array, primitive
   hs-source-dirs: src
   default-language: Haskell2010
-  ghc-options: -Wall -fprof-auto
+  ghc-options: -fprof-auto
 
 executable benchmark
   main-is: ./benchmarks/benchmark.hs
   build-depends: base, NeuralNetwork, text, filepath
   default-language: Haskell2010
-  ghc-options: -Wall -fprof-auto -rtsopts
+  ghc-options: -fprof-auto -rtsopts
 
 executable mnist
   main-is: examples/MNIST/mnist.hs
   build-depends: base, NeuralNetwork, bytestring
   default-language: Haskell2010
-  ghc-options: -Wall -fprof-auto -rtsopts
+  ghc-options: -fprof-auto -rtsopts
 
 executable iris
   main-is: examples/IRIS/iris.hs
   build-depends: base, NeuralNetwork, bytestring, cassava
   default-language: Haskell2010
-  ghc-options: -Wall -fprof-auto -rtsopts
+  ghc-options: -fprof-auto -rtsopts
 
 test-suite nntests
   type:                exitcode-stdio-1.0
@@ -38,4 +38,4 @@ test-suite nntests
   build-depends:       base, NeuralNetwork, QuickCheck, random
   hs-source-dirs:      test
   default-language:    Haskell2010
-  ghc-options:         -Wall -fprof-auto
+  ghc-options:         -fprof-auto
