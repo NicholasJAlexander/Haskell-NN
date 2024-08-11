@@ -59,7 +59,7 @@ instance Show BackpropNet where
 
 -- | Data type representing a layer during the propagation phase in a neural network.
 --   Contains various properties required for forward and backward propagation.
-data PropagatedLayer = PropagatedLayer {
+data P_Layer = P_Layer {
     -- | Input to the layer. Represented as a column vector.
     propIn :: ColumnVector Double,
     -- | Output from the layer. Also a column vector.
@@ -76,7 +76,7 @@ data PropagatedLayer = PropagatedLayer {
 
 -- | Data type representing a layer during the backpropagation phase in a neural network.
 --   Contains all the necessary components for the backward pass of the training algorithm.
-data BackpropagatedLayer = BackpropagatedLayer {
+data BP_Layer = BP_Layer {
     -- | Partial derivative of the cost with respect to the z-value (weighted input) of this layer.
     bpDazzle :: ColumnVector Double,
     -- | Gradient of the biases for this layer.
@@ -122,7 +122,7 @@ validateInput net input
         fLayerSize = ncols (lWeights (head (layers net)))
 
 -- | Validates the target vector for a neural network layer.
-validateTarget :: PropagatedLayer
+validateTarget :: P_Layer
                -> ColumnVector Double
                -> ColumnVector Double
 validateTarget pLayer target
@@ -138,8 +138,8 @@ validateTarget pLayer target
 -- * Propagation
 
 -- | Propagates the state of one layer to the next in a neural network.
-propagate :: PropagatedLayer -> Layer -> PropagatedLayer
-propagate layerJ layerK = PropagatedLayer {
+propagate :: P_Layer -> Layer -> P_Layer
+propagate layerJ layerK = P_Layer {
     propIn = x,
     propOut = y,
     propF'a = f'a,
@@ -158,8 +158,8 @@ propagate layerJ layerK = PropagatedLayer {
         f'a = f' a
 
 -- | Propagates the input layer of a neural network.
-propagateInputLayer :: ColumnVector Double -> Layer -> PropagatedLayer
-propagateInputLayer input layerK = PropagatedLayer {
+propagateInputLayer :: ColumnVector Double -> Layer -> P_Layer
+propagateInputLayer input layerK = P_Layer {
     propIn = x,
     propOut = y,
     propF'a = f'a,
@@ -180,7 +180,7 @@ propagateInputLayer input layerK = PropagatedLayer {
 -- | Propagates an input vector through the neural network, returning the state of each layer after propagation.
 propagateNet :: ColumnVector Double -- ^ The input vector to the neural network.
              -> BackpropNet         -- ^ The backpropagation neural network through which the input is propagated.
-             -> [PropagatedLayer]   -- ^ A list of 'PropagatedLayer' representing the state of each layer after the input is propagated through them.
+             -> [P_Layer]   -- ^ A list of 'P_Layer' representing the state of each layer after the input is propagated through them.
 propagateNet input backNet = scanl propagate pFirstlayer remainingLayers
     where
         netLayers = layers backNet
@@ -191,10 +191,10 @@ propagateNet input backNet = scanl propagate pFirstlayer remainingLayers
 -- * Backpropagation
 
 -- | Performs backpropagation for a single layer of a neural network.
-backpropagate :: PropagatedLayer      -- ^ The forward propagated state of the current layer.
-              -> BackpropagatedLayer  -- ^ The backpropagated state of the next layer.
-              -> BackpropagatedLayer  -- ^ The backpropagated state of the current layer after computing necessary values.
-backpropagate layerJ layerK = BackpropagatedLayer {
+backpropagate :: P_Layer      -- ^ The forward propagated state of the current layer.
+              -> BP_Layer  -- ^ The backpropagated state of the next layer.
+              -> BP_Layer  -- ^ The backpropagated state of the current layer after computing necessary values.
+backpropagate layerJ layerK = BP_Layer {
     bpDazzle = dazzleJ,
     bpBiasGrad = dazzleJ,
     bpErrGrad = errorGrad dazzleJ f'aJ (propIn layerJ),
@@ -219,10 +219,10 @@ errorGrad dazzle f'a input =
             (cvGetElem dazzle i * cvGetElem f'a i) * cvGetElem input j
 
 -- | Performs the backpropagation step for the final (output) layer of a neural network.
-backpropagateFinalLayer :: PropagatedLayer      -- ^ The forward propagated state of the output layer.
+backpropagateFinalLayer :: P_Layer      -- ^ The forward propagated state of the output layer.
                         -> ColumnVector Double  -- ^ The target output vector.
-                        -> BackpropagatedLayer  -- ^ The backpropagated state of the output layer.
-backpropagateFinalLayer layerK target = BackpropagatedLayer {
+                        -> BP_Layer  -- ^ The backpropagated state of the output layer.
+backpropagateFinalLayer layerK target = BP_Layer {
     bpDazzle = dazzle,
     bpBiasGrad = dazzle,
     bpErrGrad = errorGrad dazzle f'a (propIn layerK),
@@ -239,8 +239,8 @@ backpropagateFinalLayer layerK target = BackpropagatedLayer {
 
 -- | Executes backpropagation across all layers of a neural network.
 backpropagateNet :: ColumnVector Double            -- ^ The target output vector for the entire network.
-                 -> [PropagatedLayer]              -- ^ List of layers in their forward propagated state.
-                 -> [BackpropagatedLayer]          -- ^ List of layers in their backpropagated state.
+                 -> [P_Layer]              -- ^ List of layers in their forward propagated state.
+                 -> [BP_Layer]          -- ^ List of layers in their backpropagated state.
 backpropagateNet target propLayers = L.scanr backpropagate bpOutputLayer hiddenLayers
     where
         hiddenLayers = init propLayers
@@ -250,7 +250,7 @@ backpropagateNet target propLayers = L.scanr backpropagate bpOutputLayer hiddenL
 
 -- | Updates the weights of a layer in a neural network based on the backpropagation results.
 update :: Double              -- ^ The learning rate, determining how much the weights are adjusted.
-       -> BackpropagatedLayer -- ^ The backpropagated layer containing the error gradient and current weights.
+       -> BP_Layer -- ^ The backpropagated layer containing the error gradient and current weights.
        -> Layer               -- ^ The updated layer with new weights.
 update rate layer = Layer { lWeights = wNew, lBiases = bNew, lAF = bpAF layer }
     where
@@ -259,7 +259,7 @@ update rate layer = Layer { lWeights = wNew, lBiases = bNew, lAF = bpAF layer }
 
 -- | Updates the weights of all layers in the network.
 updateLayers :: Double               -- ^ The learning rate.
-             -> [BackpropagatedLayer] -- ^ List of backpropagated layers.
+             -> [BP_Layer] -- ^ List of backpropagated layers.
              -> [Layer]               -- ^ List of updated layers.
 updateLayers _ [] = []
 updateLayers rate (l:ls) = update rate l : updateLayers rate ls
@@ -297,9 +297,9 @@ initializeNetwork neurons activationFuncs a b lRate =
 trainSingleExample :: BackpropNet -> (ColumnVector Double, ColumnVector Double) -> BackpropNet
 trainSingleExample currentNet (input, target) = currentNet { layers = updatedLayers }
     where
-        propagatedLayers = propagateNet input currentNet
-        backpropagatedLayers = backpropagateNet target propagatedLayers
-        updatedLayers = updateLayers (learningRate currentNet) backpropagatedLayers
+        P_Layers = propagateNet input currentNet
+        BP_Layers = backpropagateNet target P_Layers
+        updatedLayers = updateLayers (learningRate currentNet) BP_Layers
 
 -- | Trains the network on a batch of data.
 trainBatch :: BackpropNet -> [(ColumnVector Double, ColumnVector Double)] -> BackpropNet
