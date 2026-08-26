@@ -77,8 +77,8 @@ data P_Layer = P_Layer {
 -- | Data type representing a layer during the backpropagation phase in a neural network.
 --   Contains all the necessary components for the backward pass of the training algorithm.
 data BP_Layer = BP_Layer {
-    -- | Partial derivative of the cost with respect to the z-value (weighted input) of this layer.
-    bpDazzle :: ColumnVector Double,
+    -- | Partial derivative of the cost with respect to this layer's /output/ (dE\/dy).
+    bpOutputGrad :: ColumnVector Double,
     -- | Gradient of the biases for this layer.
     bpBiasGrad :: ColumnVector Double,
     -- | Gradient of the error with respect to the output of this layer.
@@ -195,9 +195,9 @@ backpropagate :: P_Layer      -- ^ The forward propagated state of the current l
               -> BP_Layer  -- ^ The backpropagated state of the next layer.
               -> BP_Layer  -- ^ The backpropagated state of the current layer after computing necessary values.
 backpropagate layerJ layerK = BP_Layer {
-    bpDazzle = dazzleJ,
-    bpBiasGrad = dazzleJ,
-    bpErrGrad = errorGrad dazzleJ f'aJ (propIn layerJ),
+    bpOutputGrad = outputGradJ,
+    bpBiasGrad = outputGradJ,
+    bpErrGrad = errorGrad outputGradJ f'aJ (propIn layerJ),
     bpF'a = propF'a layerJ,
     bpIn = propIn layerJ,
     bpOut = propOut layerJ,
@@ -205,27 +205,40 @@ backpropagate layerJ layerK = BP_Layer {
     bpAF = propAF layerJ
     }
     where
-        dazzleJ = customMatrixVectorMult wKT dazzleK f'aK
-        dazzleK = bpDazzle layerK
+        outputGradJ = customMatrixVectorMult wKT outputGradK f'aK
+        outputGradK = bpOutputGrad layerK
         wKT = transpose (bpW layerK)
         f'aK = bpF'a layerK
         f'aJ = propF'a layerJ
 
+-- | Gradient of the mean-squared error with respect to the network's output.
+--
+--   For @E = 0.5 * sum (y - t)^2@ we have @dE\/dy = y - t@, so the subtraction is
+--   @output - target@. Note this is the opposite order to the @(t - y)@ that appears
+--   in many textbook statements of the delta rule; those pair it with a gradient
+--   /ascent/ step, whereas 'update' here performs gradient /descent/ (@w - rate * g@).
+--   The two conventions produce identical weight updates. Flipping one without the
+--   other reverses the descent direction.
+mseGrad :: ColumnVector Double -- ^ Network output @y@.
+        -> ColumnVector Double -- ^ Target @t@.
+        -> ColumnVector Double -- ^ @dE\/dy@.
+mseGrad output target = cvZipWith (-) output target
+
 -- | Computes the gradient of the error with respect to the layer's weights.
 errorGrad :: ColumnVector Double -> ColumnVector Double -> ColumnVector Double -> Matrix Double
-errorGrad dazzle f'a input =
-    generateMatrix (cvLength dazzle) $ \i ->
+errorGrad outputGrad f'a input =
+    generateMatrix (cvLength outputGrad) $ \i ->
         cvGenerate (cvLength input) $ \j ->
-            (cvGetElem dazzle i * cvGetElem f'a i) * cvGetElem input j
+            (cvGetElem outputGrad i * cvGetElem f'a i) * cvGetElem input j
 
 -- | Performs the backpropagation step for the final (output) layer of a neural network.
 backpropagateFinalLayer :: P_Layer      -- ^ The forward propagated state of the output layer.
                         -> ColumnVector Double  -- ^ The target output vector.
                         -> BP_Layer  -- ^ The backpropagated state of the output layer.
 backpropagateFinalLayer layerK target = BP_Layer {
-    bpDazzle = dazzle,
-    bpBiasGrad = dazzle,
-    bpErrGrad = errorGrad dazzle f'a (propIn layerK),
+    bpOutputGrad = outputGrad,
+    bpBiasGrad = outputGrad,
+    bpErrGrad = errorGrad outputGrad f'a (propIn layerK),
     bpF'a = propF'a layerK,
     bpIn = propIn layerK,
     bpOut = propOut layerK,
@@ -233,7 +246,7 @@ backpropagateFinalLayer layerK target = BP_Layer {
     bpAF = propAF layerK
     }
     where
-        dazzle = UV.zipWith (-) (propOut layerK) target
+        outputGrad = mseGrad (propOut layerK) target
         validTarget = validateTarget layerK target
         f'a = propF'a layerK
 
@@ -297,9 +310,9 @@ initializeNetwork neurons activationFuncs a b lRate =
 trainSingleExample :: BackpropNet -> (ColumnVector Double, ColumnVector Double) -> BackpropNet
 trainSingleExample currentNet (input, target) = currentNet { layers = updatedLayers }
     where
-        P_Layers = propagateNet input currentNet
-        BP_Layers = backpropagateNet target P_Layers
-        updatedLayers = updateLayers (learningRate currentNet) BP_Layers
+        pLayers = propagateNet input currentNet
+        bpLayers = backpropagateNet target pLayers
+        updatedLayers = updateLayers (learningRate currentNet) bpLayers
 
 -- | Trains the network on a batch of data.
 trainBatch :: BackpropNet -> [(ColumnVector Double, ColumnVector Double)] -> BackpropNet
