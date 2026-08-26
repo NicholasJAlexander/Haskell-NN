@@ -93,6 +93,8 @@ data BP_Layer = BP_Layer {
     bpOut :: ColumnVector Double,
     -- | Weights for this layer.
     bpW :: Matrix Double,
+    -- | Biases for this layer, carried forward so 'update' can descend from them.
+    bpB :: ColumnVector Double,
     -- | Activation function specification for this layer.
     bpAF :: ActivationFunc
 }
@@ -204,6 +206,7 @@ backpropagate layerJ layerK = BP_Layer {
     bpIn = propIn layerJ,
     bpOut = propOut layerJ,
     bpW = propW layerJ,
+    bpB = propB layerJ,
     bpAF = propAF layerJ
     }
     where
@@ -245,6 +248,7 @@ backpropagateFinalLayer layerK target = BP_Layer {
     bpIn = propIn layerK,
     bpOut = propOut layerK,
     bpW = propW layerK,
+    bpB = propB layerK,
     bpAF = propAF layerK
     }
     where
@@ -270,7 +274,7 @@ update :: Double              -- ^ The learning rate, determining how much the w
 update rate layer = Layer { lWeights = wNew, lBiases = bNew, lAF = bpAF layer }
     where
         wNew = elementwise (\w g -> w - rate * g) (bpW layer) (bpErrGrad layer)
-        bNew = cvZipWith (\b g -> b - rate * g) (bpBiasGrad layer) (bpBiasGrad layer)
+        bNew = cvZipWith (\b g -> b - rate * g) (bpB layer) (bpBiasGrad layer)
 
 -- | Updates the weights of all layers in the network.
 updateLayers :: Double               -- ^ The learning rate.
