@@ -79,7 +79,9 @@ data P_Layer = P_Layer {
 data BP_Layer = BP_Layer {
     -- | Partial derivative of the cost with respect to this layer's /output/ (dE\/dy).
     bpOutputGrad :: ColumnVector Double,
-    -- | Gradient of the biases for this layer.
+    -- | Gradient of the cost with respect to this layer's biases, @dE\/db@.
+    --   Since @z = w x + b@, @dz\/db = 1@ and so this is @dE\/dz = dE\/dy * f'(a)@ --
+    --   note the @f'(a)@ factor, which 'bpOutputGrad' does /not/ carry.
     bpBiasGrad :: ColumnVector Double,
     -- | Gradient of the error with respect to the output of this layer.
     bpErrGrad :: Matrix Double,
@@ -196,7 +198,7 @@ backpropagate :: P_Layer      -- ^ The forward propagated state of the current l
               -> BP_Layer  -- ^ The backpropagated state of the current layer after computing necessary values.
 backpropagate layerJ layerK = BP_Layer {
     bpOutputGrad = outputGradJ,
-    bpBiasGrad = outputGradJ,
+    bpBiasGrad = cvZipWith (*) outputGradJ f'aJ,
     bpErrGrad = errorGrad outputGradJ f'aJ (propIn layerJ),
     bpF'a = propF'a layerJ,
     bpIn = propIn layerJ,
@@ -237,7 +239,7 @@ backpropagateFinalLayer :: P_Layer      -- ^ The forward propagated state of the
                         -> BP_Layer  -- ^ The backpropagated state of the output layer.
 backpropagateFinalLayer layerK target = BP_Layer {
     bpOutputGrad = outputGrad,
-    bpBiasGrad = outputGrad,
+    bpBiasGrad = cvZipWith (*) outputGrad f'a,
     bpErrGrad = errorGrad outputGrad f'a (propIn layerK),
     bpF'a = propF'a layerK,
     bpIn = propIn layerK,
