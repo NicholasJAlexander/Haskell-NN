@@ -10,6 +10,11 @@ import qualified Data.List as L
 -- * Weight and Bias Generation
 
 -- | Function to generate a matrix with random values between a and b, appearing as pure.
+--
+--   The NOINLINE pragma is load-bearing: without it GHC may common up two
+--   syntactically identical applications, so two layers of the same shape would
+--   share one weight matrix and symmetry breaking would silently fail.
+{-# NOINLINE generateWeightsAndBiases #-}
 generateWeightsAndBiases :: (Int, Int) -> Double -> Double -> (Matrix Double, ColumnVector Double)
 generateWeightsAndBiases (n, m) a b = unsafePerformIO $ do
     weights <- fromLists <$> replicateM n (replicateM m (randomRIO (a, b)))
@@ -252,7 +257,7 @@ backpropagateFinalLayer layerK target = BP_Layer {
     bpAF = propAF layerK
     }
     where
-        outputGrad = mseGrad (propOut layerK) target
+        outputGrad = mseGrad (propOut layerK) validTarget
         validTarget = validateTarget layerK target
         f'a = propF'a layerK
 
@@ -298,7 +303,7 @@ buildBackpropNet :: Double -> [(Matrix Double, ColumnVector Double)] -> [Activat
 buildBackpropNet lr wsAndBs aFs = BackpropNet { layers = networkLayers, learningRate = lr }
     where
         checkedWeightsAndBiases = scanl1 checkDimensions wsAndBs
-        networkLayers = zipWith createLayer wsAndBs aFs
+        networkLayers = zipWith createLayer checkedWeightsAndBiases aFs
         createLayer (weights, biases) af = Layer { lWeights = weights, lBiases = biases, lAF = af }
 
 -- | Function to initialize a neural network.
